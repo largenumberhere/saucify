@@ -63,6 +63,19 @@ p {
     
 }
 
+.disabled-auto-update {
+    background-color: wheat;
+    border-color: yellow;
+}
+
+#auto-update-toggle {
+    margin-left: 40px;
+    display: inline;
+}
+
+
+
+
 .input_container input:focus {
     border-width: -1px;
 }
