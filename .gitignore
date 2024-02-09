@@ -1,2 +1,7 @@
 /todo.txt
 /junk.txt
+/notes.txt
+/index.old.txt
+/package-lock.json
+/node_modules/
+/dist/*.*

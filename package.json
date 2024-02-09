@@ -1,0 +1,19 @@
+{
+  "name": "saucify_npm",
+  "version": "2.0.0",
+  "description": "Sauces",
+  "main": "script.js",
+  "scripts": {
+    "build:minifyJs": "terser --compress --mangle -o dist/script.dist.js src/script.js",
+    "build:minifyCss": "npx clean-css-cli -o dist/styles.dist.css src/styles.css",
+    "build": "npm run build:minifyJs && npm run build:minifyCss && npm run copy",
+    "copy": "npx copyfiles index.html favicon.ico dist"
+  },
+  "author": "largenumbergoeshere",
+  "license": "",
+  "devDependencies": {
+    "clean-css-cli": "^5.3.3",
+    "copyfiles": "^2.4.1",
+    "terser": "^5.27.0"
+  }
+}
