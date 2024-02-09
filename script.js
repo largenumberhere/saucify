@@ -2,6 +2,7 @@
  const input_box_invalid_input_css_marker_class = "input-box-with-invalid-user-input";
 
  const auto_update_toggle = document.querySelector("#auto-update-toggle");
+ const reset_sauce_count = document.querySelector("#reset-sauce-count");
 
  // input boxes
  const sauces_element = document.querySelector("#tallness_sauces");
@@ -12,6 +13,9 @@
  const m_element = document.querySelector("#tallness_m");
  const dm_element = document.querySelector("#tallness_dm");
  const um_element = document.querySelector("#tallness_um");
+ const km_element = document.querySelector("#tallness_km");
+ const miles_element = document.querySelector("#tallness_miles");
+ const yards_element = document.querySelector("#tallness_yards");
 
 
  // force update buttons
@@ -20,9 +24,12 @@
  const tallness_mm_button = document.querySelector("#tallness_mm_button");
  const tallness_nm_button = document.querySelector("#tallness_nm_button");
  const tallness_inches_button = document.querySelector("#tallness_inches_button");
- const tallness_m_button = document.querySelector("#tallness_m_button")
- const tallness_dm_button = document.querySelector("#tallness_dm_button")
- const tallness_um_button = document.querySelector("#tallness_um_button")
+ const tallness_m_button = document.querySelector("#tallness_m_button");
+ const tallness_dm_button = document.querySelector("#tallness_dm_button");
+ const tallness_um_button = document.querySelector("#tallness_um_button");
+ const tallness_km_button = document.querySelector("#tallness_km_button");
+ const tallness_miles_button = document.querySelector("#tallness_miles_button");
+ const tallness_yards_button = document.querySelector("#tallness_yards_button");
 
 
  /*
@@ -42,19 +49,25 @@
              - indexes are the same input_elements, eg: input_element[0] is for input_button[0]
 
  */
- const input_elements = [sauces_element, cm_element, mm_element, nm_element, inches_element, m_element, dm_element, um_element]; 
- const input_buttons = [tallness_sauces_button, tallness_cm_button, tallness_mm_button, tallness_nm_button, tallness_inches_button, tallness_m_button, tallness_dm_button, tallness_um_button];
+ const input_elements = [sauces_element, cm_element, mm_element, nm_element, inches_element, m_element, dm_element, um_element, km_element, miles_element, yards_element]; 
+ const input_buttons = [tallness_sauces_button, tallness_cm_button, tallness_mm_button, tallness_nm_button, tallness_inches_button, tallness_m_button, tallness_dm_button, tallness_um_button, tallness_km_button, tallness_miles_button, tallness_yards_button];
 
- const input_element_from_sauce_converters = [sauces_to_cm, sauces_to_mm, sauces_to_nm, sauces_to_inches, sauces_to_m, sauces_to_dm, sauces_to_um];
- const input_element_to_sauce_converters = [cm_to_sauces, mm_to_sauces, nm_to_sauces, inches_to_sauces, m_to_sauces, dm_to_sauces, um_to_sauces];
+ const input_element_from_sauce_converters = [sauces_to_cm, sauces_to_mm, sauces_to_nm, sauces_to_inches, sauces_to_m, sauces_to_dm, sauces_to_um, sauces_to_km, sauces_to_miles, sauces_to_yards];
+ const input_element_to_sauce_converters = [cm_to_sauces, mm_to_sauces, nm_to_sauces, inches_to_sauces, m_to_sauces, dm_to_sauces, um_to_sauces, km_to_sauces, miles_to_sauces, yards_to_sauces];
 
  const sauce_to_height_ratio_cm = 5.08;
  const sauce_to_height_ratio_mm = 50.8;
- const sauce_to_height_ratio_nm = 50700000.0;
+ const sauce_to_height_ratio_nm = 50800000.0;
  const sauce_to_height_ratio_inches = 1.996062992126;
  const sauce_to_height_ratio_m = 0.0508;
  const sauce_to_height_ratio_dm = 0.508;
- const sauce_to_height_ratio_um = 50700.0;
+ const sauce_to_height_ratio_um = 50800.0;
+ const sauce_to_height_ratio_km = 0.0000508;
+ const sauce_to_height_ratio_miles = 0.0000315657;
+ const sauce_to_height_ratio_yards = 0.0555555556;
+ 
+ const local_storage_key1 = "last-sauce-count";
+ const local_storage_key2 = "auto-update-state";
 
  let input_elements_event_listeners = [];
  let input_buttons_event_listeners = [];
@@ -64,19 +77,19 @@
  auto_update_toggle.addEventListener("click", (event)=> {
      let event_source = event.target;
 
-     console.log(input_elements);
+     //console.log(input_elements);
      if (auto_update_state === "on") {
          let len = input_buttons_event_listeners.length;
          for (let i = 0; i < len; i++) {
              let handler = input_elements_event_listeners.shift();
-             console.log(handler);
+             //console.log(handler);
              input_elements[i].removeEventListener("keyup", handler);
          }
      
          auto_update_state = "off";
 
          event_source.classList.add("disabled-auto-update");
-         event_source.innerHTML = "Enable auto-update";
+         event_source.innerHTML = "Enable&nbsp; auto-update [off]";
      }
      else {
          // prevent double adding buttons
@@ -95,7 +108,22 @@
      }
  });
 
- // adds button click handlers and keyup handlers
+ // register button to clear localstorage
+ reset_sauce_count.addEventListener("click", (event) => {
+    localStorage.setItem(local_storage_key1, "0");
+    update_all("0", (sauces)=> sauces, sauces_element);
+    sauces_element.value = 0;
+ });
+
+ // load any saved data from from localstorage
+ const last_sauces_count = localStorage.getItem(local_storage_key1);
+ if (last_sauces_count !== null) {
+    sauces_element.value = last_sauces_count;
+    update_all(last_sauces_count, (sauces)=> sauces, sauces_element, false);
+ }
+
+ 
+ // add button click handlers and keyup handlers
  register_unit_conversion_handlers(input_elements, input_element_to_sauce_converters);
 
  // forward converters
@@ -127,6 +155,19 @@
     return number * sauce_to_height_ratio_um;
  }
 
+ function sauces_to_km(number) {
+    return number * sauce_to_height_ratio_km;
+ }
+
+ function sauces_to_miles(number) {
+    return number * sauce_to_height_ratio_miles;
+ }
+
+ function sauces_to_yards(number) {
+    return number * sauce_to_height_ratio_yards;
+ }
+
+
  // backward converters
  function cm_to_sauces(number) {
      return number / sauce_to_height_ratio_cm;
@@ -156,6 +197,18 @@
     return number / sauce_to_height_ratio_um;
  }
 
+ function km_to_sauces(number) {
+    return number / sauce_to_height_ratio_km;
+ }
+
+ function miles_to_sauces(number) {
+    return number / sauce_to_height_ratio_miles;
+ }
+
+ function yards_to_sauces(number) {
+    return number / sauce_to_height_ratio_yards;
+ }
+
  // walk through all elements to update them accordingly
  function update_all(text_value, fn_value_to_sauces, element_updated) {
      // some of the hoisted variables
@@ -171,7 +224,7 @@
 
      // calculate the rate in sauces
      const text_as_number = Number(text_value);
-     
+         
      // update css if tag is invalid
      if (!is_probably_a_number(text_as_number)) {
          element_updated.classList.add(input_box_invalid_input_css_marker_class);
@@ -223,6 +276,9 @@
              }
          }
      }
+
+     // save sacues count to browser
+     localStorage.setItem(local_storage_key1, sauces_count);
  }
 
          // https://stackoverflow.com/questions/11832914/how-to-round-to-at-most-2-decimal-places-if-necessary
@@ -235,12 +291,30 @@
      return (!isNaN(value) && isFinite(value))
  }
 
+ function is_key_string_1digit_number(keyboard_event_key) {
+    switch(keyboard_event_key) {
+        case "1" : 
+        case "2" : 
+        case "3" : 
+        case "4" : 
+        case "5" : 
+        case "6" : 
+        case "7" : 
+        case "8" : 
+        case "9" : 
+            return true; break;
+
+        default: 
+            return false;  
+    }
+ }
+
  function register_unit_conversion_handlers(input_elements, to_sauce_converters) {
      // register root element
      function keyup_handler (keyboard_event) {
          const source_element = keyboard_event.target;
          const element_text = source_element.value;
-     
+    
          update_all(element_text, (sauces)=> sauces, source_element);
      };
      input_elements_event_listeners.push(keyup_handler);
@@ -249,7 +323,7 @@
      function click_handler (keyboard_event) {
          const source_element = input_elements[0];
          const element_text = source_element.value;
-
+         
          update_all(element_text, (sauces)=> sauces, source_element);
          //console.log(`registered element with id: ${input_buttons[0].id} button with id ${input_buttons[0].id}`);
      };

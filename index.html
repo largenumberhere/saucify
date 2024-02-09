@@ -8,20 +8,20 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Saucify</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
 
     <div class="outer">
-
-
         <div class="all_input_containers">
             <div>
                 <h1>Cat height converter</h1>
                 <p>Enter a creature's height and see it in sauces!</p>
                 <br>
                 <p>Is this page slow?</p>
-                <button id="auto-update-toggle">Disable auto-update</button>
+                <button class="slow-page-button" id="auto-update-toggle">Disable auto-update</button>
+                <button class="slow-page-button" id="reset-sauce-count">Clear sauce count</button>
             </div>
             <div class="category_div">
                 <h3 class="category_title">Universal</h3>
@@ -33,6 +33,12 @@
             </div>
             <div class="category_div">
                 <h3 class="category_title">Metric</h3>
+
+                <div class="input_container">
+                    <p>Kilometres</p>
+                    <input type="text" id="tallness_km" aria-invalid="false"/>
+                    <button type="button" id="tallness_km_button">Submit</button>
+                </div>
 
                 <div class="input_container">
                     <p>Metres</p>
@@ -76,11 +82,26 @@
 
             <div class="category_div">
                 <h3 class="category_title">Imperial</h3>
+                
+                <div class="input_container">
+                    <p>Miles</p>
+                    <input type="text" id="tallness_miles" aria-invalid="false"/>
+                    <button type="button" id="tallness_miles_button">Submit</button>
+                </div>
+
+                <div class="input_container">
+                    <p>Yards</p>
+                    <input type="text" id="tallness_yards" aria-invalid="false"/>
+                    <button type="button" id="tallness_yards_button">Submit</button>
+                </div>
+
+                
                 <div class="input_container">
                     <p>Inches</p>
                     <input type="text" id="tallness_inches" aria-invalid="false"/>
                     <button type="button" id="tallness_inches_button">Submit</button>
                 </div>
+
             </div>
         </div>
     </div>

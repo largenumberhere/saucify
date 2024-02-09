@@ -2,6 +2,11 @@
     font-size: 20px;
     font-family: Arial, Helvetica, sans-serif ;
     font-weight: 300;
+    border: none;
+    border-width: 0px;
+    outline: none;
+    outline-width: 0px;
+
 }
 
 h1 {
@@ -22,14 +27,31 @@ h1 {
     width: 100%;
 }
 
+input {
+    outline: solid;
+    outline-style: solid;
+    outline-width: 2px;
+}
+
 button {
     font-size: 15px;
     font-weight: 500;
+    outline: auto;
+}
+
+button:active {
+    background-color: brown !important;
 }
 
 p {
     padding: 20px;
 }
+
+.all_input_containers {
+    max-width: 1000px;
+    display: inline;
+}
+
 
 .input-box-with-invalid-user-input {
     background-color: lightcoral;
@@ -56,24 +78,35 @@ p {
     
     margin-bottom: 20px;
     padding-left: 10px;
-    border-radius: 4px;
+    border-radius: 3px;
     border-width: 1px;
     /* display: flex; */
-    
-    
+}
+
+.slow-page-button {
+    padding-bottom: 20px;
+    padding-top: 20px;
+    padding-left: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin-top: 10px;
+    margin-left: 40px;
+    width: 200px;
+    text-align: center;
+
 }
 
 .disabled-auto-update {
-    background-color: wheat;
-    border-color: yellow;
+    background-color: wheat !important;
+    border-color: yellow !important;
 }
 
 #auto-update-toggle {
     margin-left: 40px;
     display: inline;
+    background-color: #d2e6b5;
 }
-
-
 
 
 .input_container input:focus {
@@ -113,14 +146,23 @@ p {
 
 .outer {
     justify-content: center;
-    display: flex;
-
-
+    /* display: flex; */
+    /* -ms-flex-align: center; */
+    /* max-width: 1000px; */
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-self: center;
+    align-items: center; */
 }
 
 .category_div {
+    display: block;
     display: flex;
-    min-width: 200px;
+    /* min-width: 200px; */
     flex-wrap: wrap;
     flex-direction: row;
+    justify-content: left;
 }
