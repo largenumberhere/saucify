@@ -9,7 +9,7 @@
     "build:minifyCss": "npx clean-css-cli -o dist/styles.dist.css src/styles.css",
     "copy": "npx copyfiles index.html favicon.ico dist",
     "debug": "npm run debug:run",
-    "debug:run": "npm run debug:copy_all && npm run debug:rename_all && npx http-server ./debug_dist",
+    "debug:run": "npm run clean:debug_dist && npm run debug:copy_all && npm run debug:rename_all && npx http-server ./debug_dist",
     "debug:copy_all": "npx copyfiles index.html favicon.ico src/styles.css src/script.js debug_dist/",
     "debug:rename_all":"mv debug_dist/src/styles.css debug_dist/styles.dist.css && mv debug_dist/src/script.js debug_dist/script.dist.js",
     "clean": "npm run clean:dist && npm run clean:debug_dist && npm run clean:node_modules",
