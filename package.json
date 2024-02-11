@@ -5,7 +5,7 @@
   "main": "script.js",
   "scripts": {
     "build": "npm run build:minifyJs && npm run build:minifyCss && npm run copy",
-    "build:minifyJs": "terser --compress --mangle -o dist/script.dist.js src/script.js",
+    "build:minifyJs": "npx terser --compress --mangle -o dist/script.dist.js src/script.js",
     "build:minifyCss": "npx clean-css-cli -o dist/styles.dist.css src/styles.css",
     "copy": "npx copyfiles index.html favicon.ico dist",
     "debug": "npm run debug:run",
